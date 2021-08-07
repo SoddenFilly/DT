@@ -1,0 +1,23 @@
+# for kivy virtual enviroment + examples showcase
+kivy_venv\Scripts\activate & python kivy_venv\share\kivy-examples\\main.py
+kivy_venv\Scripts\activate & python kivy_venv\share\kivy-examples\demo\showcase\main.py
+kivy_venv\Scripts\activate & python kivy_venv\share\kivy-examples\3Drendering\main.py
+kivy_venv\Scripts\activate & python kivy_venv\share\kivy-examples\3Drendering\mainmod.py
+kivy_venv\Scripts\activate & python kivy_venv\share\kivy-examples\3Drendering\doomroom.py
+
+# for api virtual enviroment
+apitest\scripts\activate & python apitest\python_game\.py
+apitest\scripts\activate & python apitest\python_game\api_fm.py
+apitest\scripts\activate & python apitest\python_game\api.py
+apitest\scripts\activate & python apitest\python_game\fun_with_printing.py
+apitest\scripts\activate & python apitest\python_game\basic_ISS_api.py
+apitest\scripts\activate & python apitest\python_game\game.py
+apitest\scripts\activate & python apitest\python_game\game_setup.py
+apitest\scripts\activate & python apitest\python_game\thread.py
+apitest\scripts\activate & python apitest\python_game\game_main.py
+apitest\scripts\activate & python apitest\python_game\card_gen.py
+apitest\scripts\activate & python apitest\python_graph\beta\graph_beta.py
+apitest\scripts\activate & python apitest\python_graph\beta\stockapi.py
+
+cardgame\scripts\activate & python cardgame\python_game\game.py
+cardgame\scripts\activate & python cardgame\python_game\game_setup.py

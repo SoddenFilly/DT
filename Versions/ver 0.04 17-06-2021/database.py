@@ -1,0 +1,13 @@
+CREATE TABLE 'crypto' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'c_slug' TEXT(20) DEFAULT NULL,
+'c_symbol' TEXT DEFAULT NULL
+);
+
+CREATE TABLE 'history' (
+'id' INTEGER DEFAULT NULL PRIMARY KEY AUTOINCREMENT,
+'h_datetime' TEXT DEFAULT NULL,
+'h_price' TEXT DEFAULT NULL
+);
+
+conn.execute("INSERT INTO Tickers (slug, symbol, cost) VALUES ('Bitcoin', 'BTC', 420)");

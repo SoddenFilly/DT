@@ -1,0 +1,4 @@
+#For Graphing-database project
+cd python\dt
+venv\scripts\activate && python graph.py
+venv\scripts\activate && python marketprice.py

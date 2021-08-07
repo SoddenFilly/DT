@@ -1,0 +1,2 @@
+#For Graphing project
+.python_DT\scripts\activate & python .python_DT\python\marketprice.py
