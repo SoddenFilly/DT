@@ -41,5 +41,6 @@ if __name__ == "__main__":
     # visibility of system status
     print(message_h)
 
+
     db_connection.commit()
     print("Done!") 

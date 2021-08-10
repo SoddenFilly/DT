@@ -291,7 +291,7 @@ def fetch_all(url_symbol, url_market):
             data["date"]       = data["date"]       + [date]
             data["timestamp"]  = data["timestamp"]  + [datetime.datetime.strptime(date, "%Y-%m-%d").timestamp()]
     except:
-        print(f"data for {url_symbol} is not available or the currency does not exist,\nOR these calls have been made too quickly,\nplease make calls of more than one a minimum of 60 second apart\n - skipping>>")
+        print(f"data for {url_symbol} is not available or the currency does not exist,\nOR these calls have been made too quickly,\nplease make calls of more than one a minimum of 60 second apart\n - skipping>>\n")
         return "failed"
             
     return data
