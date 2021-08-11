@@ -1,9 +1,6 @@
 import sqlite3
 import os
 
-db_file = "database.db"
-db_struct = "Resources/database_struct.sql"
-
 def db_structure (db_struct, db_connection):
 
     try:
@@ -12,6 +9,9 @@ def db_structure (db_struct, db_connection):
     except sqlite3.Error as err: print("Database failed to be structured.\n",err)
     
 if __name__ == "__main__":
+
+    db_file = "database.db"
+    db_struct = "Resources/database_struct.sql"
 
     if os.path.isfile(db_file):
         
@@ -24,12 +24,13 @@ if __name__ == "__main__":
             db_connection = sqlite3.connect(db_file)
         
         else:
-            quit("\n>>Database deletion abort\n\n>>Program terminated")
-            print(input(msg).lower())
+
+            quit("\n>>Database deletion abort\n\n>>Program terminated\n")
     
     else: db_connection = sqlite3.connect(db_file)
 
     db_structure(db_struct,db_connection)
 
     db_connection.commit()
+
     print("\n>>Database structurization complete")

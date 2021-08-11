@@ -246,7 +246,7 @@ def fetch_db(raw, url_symbol, url_market, month_cap):
     if raw: return y_axis, -1
     else: return data
 
-def fetch_all(url_symbol, url_market):
+def fetch_db(url_symbol, url_market):
 
     url_symbol = url_symbol.upper()
     url_market = url_market.upper()
@@ -297,15 +297,8 @@ def fetch_all(url_symbol, url_market):
     return data
 
 if __name__ == "__main__":
+
     symbol = input("Crypto symbol: ").upper()
     months = int(input("Whole months: "))
 
-    # returns all available data along with a flag that if changed then contains the new time period that corresponds to the available data
-    # y_ax, flag = fetch(False, symbol, "usd", months)
-    # print(url) 
-    # print(y_ax)
-
-    # print("ret",fetch(symbol, "usd", months))
-    print("ret",fetch_db(True, symbol, "usd", months))
-
-    # print(y_ax, flag)
+    print("Resulting values:",fetch(symbol, "usd", months)[0])

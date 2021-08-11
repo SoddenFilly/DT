@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from marketprice import fetch_all
+from marketprice import fetch_db
 
 def db_insert(data):
 
@@ -24,7 +24,7 @@ def db_insert(data):
 
         else:
 
-            print("Inserting fetched data into database...\n>Inserted.")
+            print("Inserting fetched data into database...\n>Inserted.\n")
 
     try:
         delete_id = cursor_res[0][0]
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
                 print("Fetching data for: " + url_symbol)
 
-                data = fetch_all(url_symbol, "USD")
+                data = fetch_db(url_symbol, "USD")
 
                 if data != "failed":
                     

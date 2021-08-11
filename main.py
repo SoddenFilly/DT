@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt # For graphing
-import os
-import sqlite3 # Database lib
+import sqlite3 # Database handling
+import os # For accessing other files
 
 def Data_status(loaded_data_status):
 
