@@ -12,7 +12,7 @@ def Data_status(loaded_data_status):
     database_status = f"populated with {database_total_currencies} currencies"
 
     db_connection.close()
-
+ 
     return f"\nDatabase status: {database_status}\nCurrency selected for graphing: {loaded_data_status}", database_total_currencies
 
 def DB_connect(db_directory):
