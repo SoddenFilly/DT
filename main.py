@@ -25,7 +25,7 @@ def DB_connect(db_directory):
 def Main(db_directory, loaded_data_status):
 
     while True:
-
+ 
         try:
             message, database_total_currencies = Data_status(loaded_data_status)
             print(message)
