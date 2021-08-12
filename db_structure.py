@@ -25,7 +25,7 @@ if __name__ == "__main__":
         
         else:
 
-            quit("\n>>Database deletion abort\n\n>>Program terminated\n")
+            quit("\n>>Database deletion abort\n")
     
     else: db_connection = sqlite3.connect(db_file)
 

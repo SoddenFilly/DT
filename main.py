@@ -4,17 +4,21 @@ import os # For accessing other files
 
 def Data_status(loaded_data_status):
 
-    cursor, db_connection = DB_connect(db_directory)
+    if os.path.isfile(db_directory):
 
-    cursor.execute("SELECT * FROM crypto")
+        cursor, db_connection = DB_connect(db_directory)
+
+        cursor.execute("SELECT * FROM crypto")
+        
+        database_total_currencies = len(cursor.fetchall())
+        database_status = f"populated with {database_total_currencies} currencies"
+
+        db_connection.close()
+
+        return f"--------------------------------------------------.\nDatabase status: {database_status}\nCurrency selected for graphing: {loaded_data_status}", loaded_data_status, True
+
+    return "No existing database file. Please initialise a new database (1).", "empty", False
     
-    database_total_currencies = len(cursor.fetchall())
-    database_status = f"populated with {database_total_currencies} currencies"
-
-    db_connection.close()
-
-    return f"\nDatabase status: {database_status}\nCurrency selected for graphing: {loaded_data_status}", database_total_currencies
-
 def DB_connect(db_directory):
 
     db_connection = sqlite3.connect(db_directory)
@@ -27,7 +31,7 @@ def Main(db_directory, loaded_data_status):
     while True:
  
         try:
-            message, database_total_currencies = Data_status(loaded_data_status)
+            message, loaded_data_status, db_exist = Data_status(loaded_data_status)
             print(message)
         except Exception as err:
             print(err)
@@ -43,11 +47,11 @@ def Main(db_directory, loaded_data_status):
 
             os.system('python db_structure.py')
 
-        elif task == 2:
+        elif task == 2 and db_exist == True:
 
             os.system('python db_insert.py')
 
-        elif task == 3 and database_total_currencies > 0:
+        elif task == 3 and db_exist == True:
 
             cursor, db_connection = DB_connect(db_directory)
 
@@ -68,8 +72,10 @@ def Main(db_directory, loaded_data_status):
                 db_connection.commit()
 
                 print(f"\nCurrency {symbol} has been purged from database.")
+            
+            db_connection.close()
 
-        elif task == 4:
+        elif task == 4 and db_exist == True:
             
             cursor, db_connection = DB_connect(db_directory)
 
@@ -81,9 +87,11 @@ def Main(db_directory, loaded_data_status):
                 increment += 1
                 print(str(increment) + ":", coin[2], "|", coin[1])
             
+            db_connection.close()
+            
             input("\n>>Press enter to continue ")
 
-        elif task == 5:
+        elif task == 5 and db_exist == True:
 
             cursor, db_connection = DB_connect(db_directory)
 
@@ -107,25 +115,33 @@ def Main(db_directory, loaded_data_status):
                 loaded_data_status = currency_data[0][1]
 
                 print(f"Currency {symbol} loaded and ready to graph.")
+            
+            db_connection.close()
 
-        elif task == 6:
+        elif task == 6 and db_exist == True:
 
-            print("! Note that the graph window needs to be closed before proceeding with the program.")
+            if loaded_data_status == "empty":
 
-            plt.figure(f"Price of {symbol} in USD over {len(graph_data_x)} months")
+                input("!!! No data is currently selected for graphing. (Press 'enter' to continue) ")
+            
+            else:
 
-            plt.plot(graph_data_x, graph_data_y, label=f"Price of {symbol} in USD")
+                print("! Note that the graph window needs to be closed before proceeding with the program.")
 
-            plt.setp(plt.gca().get_xticklabels(), rotation=30, horizontalalignment='right')
-            plt.get_current_fig_manager() .window.state("zoomed")
-            plt.grid(color='grey', alpha=0.5, linewidth=1)
-            plt.subplots_adjust(bottom=0.15)
-            plt.ylabel("Prices Ascending")
-            plt.xlabel("Dates Acending")
-            plt.gca().invert_xaxis()
-            plt.legend()
+                plt.figure(f"Price of {symbol} in USD over {len(graph_data_x)} months")
 
-            plt.show()
+                plt.plot(graph_data_x, graph_data_y, label=f"Price of {symbol} in USD")
+
+                plt.setp(plt.gca().get_xticklabels(), rotation=30, horizontalalignment='right')
+                plt.get_current_fig_manager() .window.state("zoomed")
+                plt.grid(color='grey', alpha=0.5, linewidth=1)
+                plt.subplots_adjust(bottom=0.15)
+                plt.ylabel("Prices Ascending")
+                plt.xlabel("Dates Acending")
+                plt.gca().invert_xaxis()
+                plt.legend()
+
+                plt.show()
 
         elif task == 7:
 

@@ -2,9 +2,9 @@ import sqlite3
 import os
 from marketprice import fetch_db
 
-def db_insert(data):
+def db_insert(data, db_directory):
 
-    db_connection = sqlite3.connect("database.db")
+    db_connection = sqlite3.connect(db_directory)
     cursor = db_connection.cursor()
 
     cursor_res = cursor.execute(f"SELECT * FROM crypto WHERE c_symbol = '{data['symbol']}' ") .fetchall()
@@ -52,8 +52,7 @@ def db_insert(data):
 
 if __name__ == "__main__":
 
-    if os.path.isfile("database.db") == False:
-        quit("no db here")
+    db_directory = "database.db"
 
     while True:
 
@@ -75,6 +74,6 @@ if __name__ == "__main__":
 
                 if data != "failed":
                     
-                    db_insert(data)
+                    db_insert(data, db_directory)
 
             break
