@@ -2,14 +2,13 @@ from matplotlib import pyplot as plt # For graphing
 import sqlite3 # Database handling
 import os # For accessing other files
 
-# Creates a simple overview of what state the program and database are in
-def DB_status(loaded_data_status):
+def Data_status(loaded_data_status):
 
-    if os.path.isfile(db_directory): # Checks if database file exists
+    if os.path.isfile(db_directory):
 
         cursor, db_connection = DB_connect(db_directory)
 
-        cursor.execute("SELECT * FROM crypto") # Gets list of all currency symbols from database
+        cursor.execute("SELECT * FROM crypto")
         
         database_total_currencies = len(cursor.fetchall())
         database_status = f"populated with {database_total_currencies} currencies"
@@ -32,9 +31,9 @@ def Main(db_directory, loaded_data_status):
     while True:
  
         try:
-            message, loaded_data_status, db_exist = DB_status(loaded_data_status)
+            message, loaded_data_status, db_exist = Data_status(loaded_data_status)
             print(message)
-        except Exception as err: # This should never have to fire
+        except Exception as err:
             print(err)
         
         try:
@@ -44,28 +43,28 @@ def Main(db_directory, loaded_data_status):
             task = 0
             input("\n!!! Please input an integer within the range 1-7 (Press 'enter' to continue)\n")
 
-        if task == 1: # New database
+        if task == 1:
 
             os.system('python db_structure.py')
 
-        elif task == 2 and db_exist == True: # Add to database
+        elif task == 2 and db_exist == True:
 
             os.system('python db_insert.py')
 
-        elif task == 3 and db_exist == True: # Delete from database
+        elif task == 3 and db_exist == True:
 
             cursor, db_connection = DB_connect(db_directory)
 
             symbol = input("symbol: ") .upper()
             data = cursor.execute(f"SELECT * FROM crypto WHERE c_symbol = '{symbol}' ") .fetchall()
             
-            if data == []: # Data returns as [] if no data is found when querying the database
+            if data == []:
 
                 input(f"\n!!! Currency {symbol} does not currently exit within the database. (Press 'enter' to continue) ")
 
             else:
 
-                delete_id = data[0][0] # The '[0][0]' is needed to go from the returned data '([1, ?, ?])' to '1'
+                delete_id = data[0][0]
             
                 cursor.execute(f"DELETE FROM crypto WHERE id = '{delete_id}' ")
                 cursor.execute(f"DELETE FROM history WHERE c_id = '{delete_id}' ")
@@ -76,14 +75,14 @@ def Main(db_directory, loaded_data_status):
             
             db_connection.close()
 
-        elif task == 4 and db_exist == True: # List all currency's in database
+        elif task == 4 and db_exist == True:
             
             cursor, db_connection = DB_connect(db_directory)
 
             coins = cursor.execute(f"SELECT * FROM crypto") .fetchall()
 
             increment = 0
-            for coin in coins: # Iterates through all currency's in database and prints them out with some additional information
+            for coin in coins:
 
                 increment += 1
                 print(str(increment) + ":", coin[2], "|", coin[1])
@@ -92,7 +91,7 @@ def Main(db_directory, loaded_data_status):
             
             input("\n>>Press enter to continue ")
 
-        elif task == 5 and db_exist == True: # Selects all the historic data for the provided currency
+        elif task == 5 and db_exist == True:
 
             cursor, db_connection = DB_connect(db_directory)
 
@@ -107,7 +106,7 @@ def Main(db_directory, loaded_data_status):
             else:
                 raw_data = cursor.execute(f"SELECT * FROM history WHERE c_id = '{currency_data[0][0]}' ") .fetchall()
 
-                graph_data_x, graph_data_y = [], [] # These are the x,y axis used when graphing
+                graph_data_x, graph_data_y = [], []
                 for value in raw_data:
 
                     graph_data_x.append(value[6])
@@ -119,9 +118,9 @@ def Main(db_directory, loaded_data_status):
             
             db_connection.close()
 
-        elif task == 6 and db_exist == True: # Graphs selected data ( task 6 )
+        elif task == 6 and db_exist == True:
 
-            if loaded_data_status == "empty": # Wont graph if no historic data is selected
+            if loaded_data_status == "empty":
 
                 input("!!! No data is currently selected for graphing. (Press 'enter' to continue) ")
             
@@ -129,22 +128,22 @@ def Main(db_directory, loaded_data_status):
 
                 print("! Note that the graph window needs to be closed before proceeding with the program.")
 
-                plt.figure(f"Price of {symbol} in USD over {len(graph_data_x)} months") # Name of graphing window
+                plt.figure(f"Price of {symbol} in USD over {len(graph_data_x)} months")
 
-                plt.plot(graph_data_x, graph_data_y, label=f"Price of {symbol} in USD") # Injects selected data into graph and sets arbitrary values specific to this plotline
-                # Graph settings
-                plt.setp(plt.gca().get_xticklabels(), rotation=30, horizontalalignment='right') # Rotates dates on x-axis so they don't overlap
-                plt.get_current_fig_manager() .window.state("zoomed") # Makes the graphing window always open in fullscreen
-                plt.grid(color='grey', alpha=0.5, linewidth=1) # Adds a semi-visible grid to better see where values line up on the graph
-                plt.subplots_adjust(bottom=0.15) # Fixes the bottom border of the graph slightly higher than default
-                plt.ylabel("Prices Ascending") # Y-axis title
-                plt.xlabel("Dates Acending") # X-axis title
-                plt.gca().invert_xaxis() # Matplotlib atomatically inverts the x-axis based on the data, this reverses that
-                plt.legend() # displays legend on graph
+                plt.plot(graph_data_x, graph_data_y, label=f"Price of {symbol} in USD")
 
-                plt.show() # Opens graphing window
+                plt.setp(plt.gca().get_xticklabels(), rotation=30, horizontalalignment='right')
+                plt.get_current_fig_manager() .window.state("zoomed")
+                plt.grid(color='grey', alpha=0.5, linewidth=1)
+                plt.subplots_adjust(bottom=0.15)
+                plt.ylabel("Prices Ascending")
+                plt.xlabel("Dates Acending")
+                plt.gca().invert_xaxis()
+                plt.legend()
 
-        elif task == 7: # Quits program
+                plt.show()
+
+        elif task == 7:
 
             quit(">Program terminated\n")
 
@@ -153,6 +152,6 @@ if __name__ == "__main__":
 
     db_directory = "database.db"
 
-    loaded_data_status = "empty" # Selected data
+    loaded_data_status = "empty"
     
     Main(db_directory, loaded_data_status)
