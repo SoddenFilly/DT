@@ -39,7 +39,10 @@ def Main(db_directory, loaded_data_status):
         
         try:
             task = int(input("\nWhat do you want to do?\n (1): New database\n (2): Add to database\n (3): Remove from database\n (4): List all currently stored coins\n (5): Load database data\n (6): Graph loaded data\n (7): Quit program\n: "))
-            print()
+            
+            if task > 7 or task < 1:
+                input("\n!!! Please input an integer within the range 1-7 (Press 'enter' to continue)\n")
+            
         except:
             task = 0
             input("\n!!! Please input an integer within the range 1-7 (Press 'enter' to continue)\n")
@@ -61,7 +64,7 @@ def Main(db_directory, loaded_data_status):
             
             if data == []: # Data returns as [] if no data is found when querying the database
 
-                input(f"\n!!! Currency {symbol} does not currently exit within the database. (Press 'enter' to continue) ")
+                input(f"\n!!! Currency {symbol} does not currently exit within the database. (Press 'enter' to continue)\n")
 
             else:
 
@@ -102,7 +105,7 @@ def Main(db_directory, loaded_data_status):
 
             if currency_data == []:
 
-                input(f"\n!!! Currency {symbol} does not currently exit within the database. (Press 'enter' to continue) ")
+                input(f"\n!!! Currency {symbol} does not currently exit within the database. (Press 'enter' to continue)\n")
             
             else:
                 raw_data = cursor.execute(f"SELECT * FROM history WHERE c_id = '{currency_data[0][0]}' ") .fetchall()
@@ -115,7 +118,7 @@ def Main(db_directory, loaded_data_status):
 
                 loaded_data_status = currency_data[0][1]
 
-                print(f"Currency {symbol} loaded and ready to graph.")
+                print(f"\nCurrency {symbol} loaded and ready to graph.")
             
             db_connection.close()
 
@@ -123,7 +126,7 @@ def Main(db_directory, loaded_data_status):
 
             if loaded_data_status == "empty": # Wont graph if no historic data is selected
 
-                input("!!! No data is currently selected for graphing. (Press 'enter' to continue) ")
+                input("\n!!! No data is currently selected for graphing. (Press 'enter' to continue)\n")
             
             else:
 
@@ -134,13 +137,21 @@ def Main(db_directory, loaded_data_status):
                 plt.plot(graph_data_x, graph_data_y, label=f"Price of {symbol} in USD") # Injects selected data into graph and sets arbitrary values specific to this plotline
                 # Graph settings
                 plt.setp(plt.gca().get_xticklabels(), rotation=30, horizontalalignment='right') # Rotates dates on x-axis so they don't overlap
-                plt.get_current_fig_manager() .window.state("zoomed") # Makes the graphing window always open in fullscreen
                 plt.grid(color='grey', alpha=0.5, linewidth=1) # Adds a semi-visible grid to better see where values line up on the graph
                 plt.subplots_adjust(bottom=0.15) # Fixes the bottom border of the graph slightly higher than default
                 plt.ylabel("Prices Ascending") # Y-axis title
                 plt.xlabel("Dates Acending") # X-axis title
                 plt.gca().invert_xaxis() # Matplotlib atomatically inverts the x-axis based on the data, this reverses that
                 plt.legend() # displays legend on graph
+
+                try:
+                    figManager = plt.get_current_fig_manager().window
+                    figManager.state("zoomed") # Makes the graphing window always open in fullscreen
+                except: # If first '("zoomed")' method fails
+                    try:
+                        figManager.showMaximized()
+                    except:
+                        print("\nProgram failed to open graph window in fullscreen mode, opened in the smaller windowed mode instead")
 
                 plt.show() # Opens graphing window
 

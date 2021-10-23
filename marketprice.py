@@ -23,10 +23,14 @@ def fetch(url_symbol, url_market, month_cap):
 
             url = f"https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_MONTHLY&symbol={url_symbol}&market={url_market}&apikey={api_key}"
                 
-            # Sends a request to www.alphavantage.co using a concatinated url and then converts the response to string format
-            api_response = requests.get(url).text
-
-            dict_json = json.loads(api_response)
+            try:
+                # Sends a request to www.alphavantage.co using concatinated url and then converts the response to string format
+                api_response = requests.get(url).text
+                # Converts string into a dictionary
+                dict_json = json.loads(api_response)
+            except:
+                print("!!! Remember! You need an internet connection for this feature to function correctly!\n")
+                return "failed"
             
         except KeyError: print("You may have misspelt somthing or that currency is not available,\nPlease try again.")
         
@@ -109,11 +113,14 @@ def fetch_db(url_symbol, url_market):
 
         url = f"https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_MONTHLY&symbol={url_symbol}&market={url_market}&apikey={api_key}"
             
-        # Sends a request to www.alphavantage.co using concatinated url and then converts the response to string format
-        api_response = requests.get(url).text
-
-        # Converts string into a dictionary
-        dict_json = json.loads(api_response)
+        try:
+            # Sends a request to www.alphavantage.co using concatinated url and then converts the response to string format
+            api_response = requests.get(url).text
+            # Converts string into a dictionary
+            dict_json = json.loads(api_response)
+        except:
+            print("!!! Remember! You need an internet connection for this feature to function correctly!\n")
+            return "failed"
         
     except KeyError: quit("You may have misspelt somthing or that currency is not available,\nPlease try again.")
 
